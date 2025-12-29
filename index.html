@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จดหมายรักขอพรน่ารัก</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #ffe6f2;
+            color: #5a3d5c;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(#ffcce6 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(255, 150, 200, 0.2);
+        }
+        
+        h1 {
+            color: #ff66b2;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px rgba(255, 200, 220, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #9966cc;
+            margin-bottom: 20px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .letter-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(255, 150, 200, 0.3);
+        }
+        
+        .envelope-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .section-title {
+            color: #ff66b2;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #ffccdd;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #9966cc;
+            font-weight: 500;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffccdd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #fff9fc;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff66b2;
+            box-shadow: 0 0 0 3px rgba(255, 102, 178, 0.2);
+        }
+        
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-send {
+            background-color: #ff66b2;
+            color: white;
+        }
+        
+        .btn-send:hover {
+            background-color: #ff3385;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 102, 178, 0.4);
+        }
+        
+        .btn-reset {
+            background-color: #e6ccff;
+            color: #663399;
+        }
+        
+        .btn-reset:hover {
+            background-color: #d9b3ff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(204, 153, 255, 0.4);
+        }
+        
+        /* ซองจดหมาย */
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 220px;
+            margin-top: 20px;
+        }
+        
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #ffcce6;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(255, 150, 200, 0.4);
+            overflow: hidden;
+        }
+        
+        .envelope-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ffccdd;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
+        }
+        
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 60%;
+            background-color: #ff99cc;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 2;
+            transition: transform 0.8s ease;
+            transform-origin: top;
+        }
+        
+        .letter-paper {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: calc(100% - 30px);
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: all 0.8s ease;
+        }
+        
+        .letter-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .letter-header {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ff66b2;
+            border-bottom: 1px dotted #ffccdd;
+            padding-bottom: 10px;
+        }
+        
+        .open-envelope .envelope-flap {
+            transform: rotateX(180deg);
+        }
+        
+        .open-envelope .letter-paper {
+            transform: translateY(-140px);
+            height: 280px;
+        }
+        
+        .controls {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .btn-envelope {
+            background-color: #9966cc;
+            color: white;
+        }
+        
+        .btn-envelope:hover {
+            background-color: #7a4dac;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(153, 102, 204, 0.4);
+        }
+        
+        .wish-counter {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 3px 10px rgba(255, 150, 200, 0.2);
+        }
+        
+        .wish-counter h3 {
+            color: #ff66b2;
+            margin-bottom: 10px;
+        }
+        
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff3385;
+            text-shadow: 2px 2px 0px rgba(255, 200, 220, 0.5);
+        }
+        
+        .wish-message {
+            font-size: 1.1rem;
+            margin-top: 5px;
+            color: #9966cc;
+        }
+        
+        .heart {
+            color: #ff66b2;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #9966cc;
+            font-size: 0.9rem;
+            border-top: 1px dashed #ffccdd;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .envelope-container {
+                width: 280px;
+                height: 200px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heart heart"></i> จดหมายรักขอพรน่ารัก <i class="fas fa-heart heart"></i></h1>
+            <p class="subtitle">เขียนคำอธิษฐานและความปรารถนาดีของคุณในซองจดหมายสุดน่ารัก</p>
+            <p>เติมความรักและความหวังดีลงในจดหมาย แล้วส่งความปรารถนาดีไปให้คนที่คุณห่วงใย</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="letter-section">
+                <h2 class="section-title"><i class="fas fa-edit"></i> เขียนจดหมายขอพรของคุณ</h2>
+                
+                <div class="form-group">
+                    <label for="to"><i class="fas fa-user"></i> ถึง:</label>
+                    <input type="text" id="to" placeholder="กรอกชื่อคนที่คุณต้องการส่งจดหมายถึง...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="from"><i class="fas fa-user-edit"></i> จาก:</label>
+                    <input type="text" id="from" placeholder="กรอกชื่อของคุณ...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="wish"><i class="fas fa-star"></i> คำขอพร/คำอธิษฐาน:</label>
+                    <textarea id="wish" placeholder="เขียนคำขอพรหรือคำอธิษฐานของคุณที่นี่..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message"><i class="fas fa-envelope"></i> ข้อความเพิ่มเติม:</label>
+                    <textarea id="message" placeholder="เขียนข้อความเพิ่มเติมที่คุณต้องการบอกกับคนรับ..."></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn-send" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i> ส่งจดหมายขอพร
+                    </button>
+                    <button class="btn-reset" id="resetBtn">
+                        <i class="fas fa-redo"></i> ล้างทั้งหมด
+                    </button>
+                </div>
+            </section>
+            
+            <section class="envelope-section">
+                <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> ซองจดหมายของคุณ</h2>
+                
+                <div class="envelope-container" id="envelopeContainer">
+                    <div class="envelope">
+                        <div class="envelope-body"></div>
+                        <div class="envelope-flap"></div>
+                        <div class="letter-paper">
+                            <div class="letter-content">
+                                <div class="letter-header">
+                                    <h3>จดหมายขอพร</h3>
+                                    <p id="letterTo">ถึง: [ชื่อผู้รับ]</p>
+                                    <p id="letterFrom">จาก: [ชื่อคุณ]</p>
+                                </div>
+                                <div id="letterWish">
+                                    <p><strong>คำขอพรของฉัน:</strong></p>
+                                    <p>[เขียนคำขอพรของคุณที่นี่]</p>
+                                </div>
+                                <div id="letterMessage">
+                                    <p><strong>ข้อความจากใจ:</strong></p>
+                                    <p>[เขียนข้อความเพิ่มเติมที่นี่]</p>
+                                </div>
+                                <div style="text-align: center; margin-top: 15px; color: #ff66b2;">
+                                    <i class="fas fa-heart"></i> ขอให้พรของคุณเป็นจริง <i class="fas fa-heart"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="btn-envelope" id="toggleEnvelope">
+                        <i class="fas fa-envelope"></i> เปิด/ปิด ซองจดหมาย
+                    </button>
+                </div>
+                
+                <div class="wish-counter">
+                    <h3>จำนวนคำขอพรที่ส่งแล้ว</h3>
+                    <div class="counter" id="wishCount">0</div>
+                    <p class="wish-message" id="wishMessage">คุณเป็นคนแรกที่ส่งคำขอพร!</p>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>สร้างด้วยความรัก ❤️ จดหมายทุกฉบับเต็มไปด้วยความปรารถนาดีและความหวัง</p>
+            <p>© 2023 จดหมายรักขอพรน่ารัก | ทุกคำขอพรมาจากใจของผู้ส่ง</p>
+        </footer>
+    </div>
+
+    <script>
+        // องค์ประกอบ DOM
+        const toInput = document.getElementById('to');
+        const fromInput = document.getElementById('from');
+        const wishInput = document.getElementById('wish');
+        const messageInput = document.getElementById('message');
+        const sendBtn = document.getElementById('sendBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const toggleEnvelopeBtn = document.getElementById('toggleEnvelope');
+        const envelopeContainer = document.getElementById('envelopeContainer');
+        const wishCountElement = document.getElementById('wishCount');
+        const wishMessageElement = document.getElementById('wishMessage');
+        
+        // องค์ประกอบจดหมาย
+        const letterTo = document.getElementById('letterTo');
+        const letterFrom = document.getElementById('letterFrom');
+        const letterWish = document.getElementById('letterWish');
+        const letterMessage = document.getElementById('letterMessage');
+        
+        // ตัวนับคำขอพร
+        let wishCount = localStorage.getItem('wishCount') || 0;
+        wishCountElement.textContent = wishCount;
+        updateWishMessage();
+        
+        // อัปเดตข้อความคำขอพร
+        function updateWishMessage() {
+            if (wishCount == 0) {
+                wishMessageElement.textContent = "คุณเป็นคนแรกที่ส่งคำขอพร!";
+            } else if (wishCount < 5) {
+                wishMessageElement.textContent = "คำขอพรของคุณจะสมหวังแน่นอน!";
+            } else if (wishCount < 10) {
+                wishMessageElement.textContent = "ผู้คนกำลังส่งคำขอพรด้วยความหวังดี";
+            } else {
+                wishMessageElement.textContent = "คำขอพรมากมายกำลังส่งไปทั่วโลก!";
+            }
+        }
+        
+        // ฟังก์ชันส่งจดหมาย
+        sendBtn.addEventListener('click', function() {
+            // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+            if (!toInput.value.trim() || !fromInput.value.trim() || !wishInput.value.trim()) {
+                alert('กรุณากรอกข้อมูลให้ครบ (ถึง, จาก, และคำขอพร)');
+                return;
+            }
+            
+            // อัปเดตเนื้อหาจดหมาย
+            letterTo.textContent = `ถึง: ${toInput.value}`;
+            letterFrom.textContent = `จาก: ${fromInput.value}`;
+            letterWish.innerHTML = `<p><strong>คำขอพรของฉัน:</strong></p><p>${wishInput.value}</p>`;
+            
+            if (messageInput.value.trim()) {
+                letterMessage.innerHTML = `<p><strong>ข้อความจากใจ:</strong></p><p>${messageInput.value}</p>`;
+            } else {
+                letterMessage.innerHTML = `<p><strong>ข้อความจากใจ:</strong></p><p>ขอให้คุณมีความสุขและสุขภาพแข็งแรงนะ</p>`;
+            }
+            
+            // เพิ่มตัวนับคำขอพร
+            wishCount++;
+            wishCountElement.textContent = wishCount;
+            localStorage.setItem('wishCount', wishCount);
+            updateWishMessage();
+            
+            // แสดงซองจดหมาย
+            envelopeContainer.classList.add('open-envelope');
+            
+            // แสดงข้อความสำเร็จ
+            alert(`ส่งจดหมายขอพรของคุณถึง ${toInput.value} เรียบร้อยแล้ว!\n\nขอให้พรของคุณสมหวังและความปรารถนาดีไปถึงผู้รับ`);
+            
+            // บันทึกลง localStorage
+            saveLetterToLocalStorage();
+        });
+        
+        // ฟังก์ชันล้างข้อมูล
+        resetBtn.addEventListener('click', function() {
+            if (confirm('คุณแน่ใจว่าต้องการล้างข้อมูลทั้งหมดในจดหมายนี้?')) {
+                toInput.value = '';
+                fromInput.value = '';
+                wishInput.value = '';
+                messageInput.value = '';
+                
+                letterTo.textContent = 'ถึง: [ชื่อผู้รับ]';
+                letterFrom.textContent = 'จาก: [ชื่อคุณ]';
+                letterWish.innerHTML = '<p><strong>คำขอพรของฉัน:</strong></p><p>[เขียนคำขอพรของคุณที่นี่]</p>';
+                letterMessage.innerHTML = '<p><strong>ข้อความจากใจ:</strong></p><p>[เขียนข้อความเพิ่มเติมที่นี่]</p>';
+                
+                envelopeContainer.classList.remove('open-envelope');
+            }
+        });
+        
+        // เปิด/ปิดซองจดหมาย
+        toggleEnvelopeBtn.addEventListener('click', function() {
+            envelopeContainer.classList.toggle('open-envelope');
+            
+            if (envelopeContainer.classList.contains('open-envelope')) {
+                toggleEnvelopeBtn.innerHTML = '<i class="fas fa-envelope"></i> ปิด ซองจดหมาย';
+            } else {
+                toggleEnvelopeBtn.innerHTML = '<i class="fas fa-envelope"></i> เปิด ซองจดหมาย';
+            }
+        });
+        
+        // บันทึกลง localStorage
+        function saveLetterToLocalStorage() {
+            const letterData = {
+                to: toInput.value,
+                from: fromInput.value,
+                wish: wishInput.value,
+                message: messageInput.value,
+                date: new Date().toLocaleDateString('th-TH')
+            };
+            
+            localStorage.setItem('lastLoveLetter', JSON.stringify(letterData));
+        }
+        
+        // โหลดข้อมูลจาก localStorage (ถ้ามี)
+        function loadLetterFromLocalStorage() {
+            const savedLetter = localStorage.getItem('lastLoveLetter');
+            if (savedLetter) {
+                const letterData = JSON.parse(savedLetter);
+                
+                toInput.value = letterData.to || '';
+                fromInput.value = letterData.from || '';
+                wishInput.value = letterData.wish || '';
+                messageInput.value = letterData.message || '';
+                
+                // อัปเดตจดหมายถ้ามีข้อมูล
+                if (letterData.to) {
+                    letterTo.textContent = `ถึง: ${letterData.to}`;
+                }
+                if (letterData.from) {
+                    letterFrom.textContent = `จาก: ${letterData.from}`;
+                }
+                if (letterData.wish) {
+                    letterWish.innerHTML = `<p><strong>คำขอพรของฉัน:</strong></p><p>${letterData.wish}</p>`;
+                }
+                if (letterData.message) {
+                    letterMessage.innerHTML = `<p><strong>ข้อความจากใจ:</strong></p><p>${letterData.message}</p>`;
+                }
+            }
+        }
+        
+        // โหลดข้อมูลเมื่อหน้าเว็บโหลดเสร็จ
+        window.addEventListener('DOMContentLoaded', function() {
+            loadLetterFromLocalStorage();
+            
+            // เพิ่มเอฟเฟกต์เมื่อพิมพ์
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    // อัปเดตจดหมายแบบเรียลไทม์สำหรับชื่อ
+                    if (this.id === 'to' && this.value.trim()) {
+                        letterTo.textContent = `ถึง: ${this.value}`;
+                    }
+                    if (this.id === 'from' && this.value.trim()) {
+                        letterFrom.textContent = `จาก: ${this.value}`;
+                    }
+                });
+            });
+        });
+        
+        // เพิ่มเอฟเฟกต์การพิมพ์ใน textarea
+        wishInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                letterWish.innerHTML = `<p><strong>คำขอพรของฉัน:</strong></p><p>${this.value}</p>`;
+            } else {
+                letterWish.innerHTML = '<p><strong>คำขอพรของฉัน:</strong></p><p>[เขียนคำขอพรของคุณที่นี่]</p>';
+            }
+        });
+        
+        messageInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                letterMessage.innerHTML = `<p><strong>ข้อความจากใจ:</strong></p><p>${this.value}</p>`;
+            } else {
+                letterMessage.innerHTML = '<p><strong>ข้อความจากใจ:</strong></p><p>[เขียนข้อความเพิ่มเติมที่นี่]</p>';
+            }
+        });
+    </script>
+</body>
+</html>
